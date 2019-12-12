@@ -14,7 +14,7 @@ public class helloWorldController {
         this.helloWorldService = helloWorldService;
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/")
     public String say_hello () {
         return helloWorldService.talk();
     }
