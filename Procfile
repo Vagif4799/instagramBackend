@@ -1,1 +1,1 @@
-web: java -cp target/classes/:target/deps/* instagram.Application
+web: java  $JAVA_OPTS -jar target/*.jar --p $PORT
