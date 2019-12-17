@@ -11,12 +11,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force=true)
 @Entity
-@Table(name = "user")
+@Table(name = "user_entity")
 public class User {
 
     @Column
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private final int id;
     @Column
     private  String name;
@@ -43,6 +43,10 @@ public class User {
     private  int number_followers;
     @Column
     private  int number_follow;
+
+
+
+
 
 
 }
