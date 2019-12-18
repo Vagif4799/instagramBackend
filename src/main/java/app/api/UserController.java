@@ -3,8 +3,10 @@ package app.api;
 
 import app.model.User;
 import app.service.UserService;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +41,14 @@ public class UserController {
     @PutMapping
     public User handle_post(@RequestBody User user) {
         return userService.create_one(user);
+    }
+
+    @PostMapping
+    public String UserController (@Valid User user, Errors errors) {
+        if (errors.hasErrors())  {
+            return "login";
+        }
+        return "redirect:/";
     }
 
 
