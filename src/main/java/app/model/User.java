@@ -19,7 +19,7 @@ public class User {
     @Column
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private final int id;
+    private final Long id;
     @Column
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")

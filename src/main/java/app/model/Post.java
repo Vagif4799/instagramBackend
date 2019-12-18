@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -15,9 +17,14 @@ import java.util.Date;
 @Table(name = "post_entity")
 public class Post {
 
-    private final int id;
-    private final int user_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private final Long id;
+    private final Long user_id;
+    @NotNull
+    @Size(min=5, message = "Please, add Caption.")
     private  String description;
+    @NotBlank
     private  String image_url;
     private int like_counter;
     private String location;
