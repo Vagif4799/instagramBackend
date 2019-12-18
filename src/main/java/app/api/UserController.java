@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String UserController (@Valid User user, Errors errors) {
+    public String UserControllerChecker (@Valid User user, Errors errors) {
         if (errors.hasErrors())  {
             return "login";
         }
