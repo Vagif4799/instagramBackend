@@ -27,25 +27,25 @@ public class User {
     @Column
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")
-    private  String surname;
+    private   String surname;
+    @Column(unique = true)
+    @NotNull
+    @Size(min = 1, message = "This field can't be empty.")
+    private   String username;
     @Column
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")
-    private  String username;
-    @Column
-    @NotNull
-    @Size(min = 1, message = "This field can't be empty.")
-    private  String mail;
+    private   String mail;
     @Column
     @NotBlank(message = "Password is required")
-    private  String password;
+    private   String password;
     @Column
-    private  String gender;
+    private   String gender;
     @Column
-    private Date birthdate;
+    private  Date birthdate;
     @Column
     @NotBlank(message = "Phone number is required")
-    private  String phone_number;
+    private   String phone_number;
     @Column
     private  String description;
     @Column
@@ -55,9 +55,6 @@ public class User {
     @Column
     private  int number_follow;
 
-
-
-
-
+    // number of followr/eds can be in follower table
 
 }
