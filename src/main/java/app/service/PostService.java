@@ -37,4 +37,9 @@ public class PostService {
         return post;
     }
 
+    public int number_of_comments(Long id) {
+        Optional<Post> byId = postRepository.findById(id);
+        return byId.get().getComments().size();
+    }
+
 }
