@@ -3,7 +3,6 @@ package app.service;
 
 import app.dao.CommentRepository;
 import app.model.Comment;
-import app.model.Post;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
