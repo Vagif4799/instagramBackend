@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -19,21 +21,30 @@ public class User {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private final int id;
     @Column
+    @NotNull
+    @Size(min = 1, message = "This field can't be empty.")
     private  String name;
     @Column
+    @NotNull
+    @Size(min = 1, message = "This field can't be empty.")
     private  String surname;
     @Column
     @NotNull
+    @Size(min = 1, message = "This field can't be empty.")
     private  String username;
     @Column
+    @NotNull
+    @Size(min = 1, message = "This field can't be empty.")
     private  String mail;
     @Column
+    @NotBlank(message = "Password is required")
     private  String password;
     @Column
     private  String gender;
     @Column
     private Date birthdate;
     @Column
+    @NotBlank(message = "Phone number is required")
     private  String phone_number;
     @Column
     private  String description;
