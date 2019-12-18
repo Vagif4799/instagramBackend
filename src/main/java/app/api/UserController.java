@@ -7,8 +7,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,15 +38,12 @@ public class UserController {
 
     @PutMapping
     public User handle_post(@RequestBody User user) {
-        return userService.create_one(user);
+        return userService.save_changes(user);
     }
 
     @PostMapping
-    public String UserControllerChecker (@Valid User user, Errors errors) {
-        if (errors.hasErrors())  {
-            return "login";
-        }
-        return "redirect:/";
+    public User UserControllerChecker (@Valid User user) {
+            return userService.create_one(user);
     }
 
 

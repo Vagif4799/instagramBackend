@@ -56,6 +56,8 @@ public class User implements UserDetails {
     @Column
     private  String profile_photo;
     @Column
+    private String cover_photo;
+    @Column
     private  int number_followers;
     @Column
     private  int number_follow;

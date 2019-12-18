@@ -36,6 +36,10 @@ public class PostController {
         postService.del_one(id);
     }
 
+    public Post handle_post(@RequestBody Post post) {
+        return postService.create_one(post);
+    }
+
     @PostMapping
     public String PostControllerChecker(@Valid Post post, Errors errors) {
         if(errors.hasErrors()) {
