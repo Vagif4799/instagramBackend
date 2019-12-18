@@ -3,23 +3,19 @@ package app.model;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force=true)
 @Entity
 @Table(name = "user_entity")
-public class User implements UserDetails {
+public class User {
 
     @Column
     @Id
@@ -62,35 +58,4 @@ public class User implements UserDetails {
     @Column
     private  int number_follow;
 
-    // number of followr/eds can be in follower table
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("Role_User"));
-    }
-
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

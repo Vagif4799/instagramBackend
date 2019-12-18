@@ -1,7 +1,6 @@
 package app.model;
 
 
-import com.sun.javafx.beans.IDProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
