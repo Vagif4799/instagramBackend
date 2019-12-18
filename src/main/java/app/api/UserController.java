@@ -3,7 +3,7 @@ package app.api;
 
 import app.model.User;
 import app.service.UserService;
-import org.springframework.validation.Errors;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,10 +15,10 @@ public class UserController {
 
     private final UserService userService;
 
-
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
 
     @GetMapping
     public Iterable<User> handle_get_all() {

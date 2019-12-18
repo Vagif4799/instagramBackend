@@ -39,6 +39,7 @@ public class UserService {
 
     public User save_changes(User user) {
         userRepository.save(user);
+        return user;
     }
 
 

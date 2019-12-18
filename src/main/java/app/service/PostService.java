@@ -34,4 +34,9 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
+    public Post save_changes(Post post) {
+        postRepository.save(post);
+        return post;
+    }
+
 }
