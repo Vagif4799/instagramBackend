@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/Posts")
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
