@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
@@ -17,9 +18,9 @@ import java.util.Date;
 @Table(name = "post_entity")
 public class Post {
 
-    @Column
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "p_id")
     private final Long id;
     @Column
     private final Long user_id;
@@ -34,10 +35,16 @@ public class Post {
     private int like_counter;
     @Column
     private String location;
-    @Column
-    private int commnets_counter;
+//    @Column
+//    private int commnets_counter;
     @Column
     @CreatedDate
     private Date createdDate;
+
+
+    @ManyToMany(mappedBy = "posts")
+    private Set<Comment> comments;
+
+
 
 }
