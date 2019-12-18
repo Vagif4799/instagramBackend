@@ -1,10 +1,8 @@
 package app.service;
 
-
 import app.dao.PostRepository;
 import app.model.Post;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service

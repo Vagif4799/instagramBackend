@@ -3,10 +3,8 @@ package app.api;
 
 import app.model.Post;
 import app.service.PostService;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
