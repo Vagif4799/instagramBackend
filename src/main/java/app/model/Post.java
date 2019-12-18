@@ -17,18 +17,26 @@ import java.util.Date;
 @Table(name = "post_entity")
 public class Post {
 
+    @Column
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private final Long id;
+    @Column
     private final Long user_id;
+    @Column
     @NotNull
     @Size(min=5, message = "Please, add Caption.")
     private  String description;
+    @Column
     @NotBlank
     private  String image_url;
+    @Column
     private int like_counter;
+    @Column
     private String location;
+    @Column
     private int commnets_counter;
+    @Column
     @CreatedDate
     private Date createdDate;
 

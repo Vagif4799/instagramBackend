@@ -28,12 +28,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> handle_get(@PathVariable("id") int id) {
+    public Optional<User> handle_get(@PathVariable("id") Long id) {
         return userService.get_one(id);
     }
 
     @DeleteMapping("/{id}")
-    public void handle_delete_one(@PathVariable("id") int id) {
+    public void handle_delete_one(@PathVariable("id") Long id) {
         userService.del_one(id);
     }
 
