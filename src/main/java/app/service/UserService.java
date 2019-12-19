@@ -48,7 +48,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public Set<Post> getPostsByUser(Long id) {
+    public List<Post> getPostsByUser(Long id) {
         return userRepository.findById(id).map(u->u.getPosts()).get();
     }
 

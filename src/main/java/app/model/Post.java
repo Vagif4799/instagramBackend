@@ -1,5 +1,6 @@
 package app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +45,7 @@ public class Post {
     @ManyToMany(mappedBy = "posts")
     private Set<Comment> comments;
 
+    @JsonIgnore
     @ManyToOne
     @JoinTable(name = "r_post_user",
             joinColumns = {

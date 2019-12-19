@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/posts")
-    public Set<Post> getPosts(@PathVariable("id") Long id)
+    public List<Post> getPosts(@PathVariable("id") Long id)
     {
         return userService.getPostsByUser(id);
     }
