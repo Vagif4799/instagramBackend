@@ -1,9 +1,14 @@
 package app.service;
 
 import app.dao.UserRepository;
+import app.model.Post;
 import app.model.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -30,16 +35,21 @@ public class UserService {
         return user;
     }
 
+    public User update_user(User user, Long id){
+        Optional<User> old_user = userRepository.findById(id);
+                old_user.ifPresent(u-> {
+                    BeanUtils.copyProperties(user, u);
+                    userRepository.save(u);
+                });
+        return user;
+    }
+
     public void del_one(Long id) {
         userRepository.deleteById(id);
     }
 
-    public User save_changes(User user) {
-        userRepository.save(user);
-        return user;
+    public Set<Post> getPostsByUser(Long id) {
+        return userRepository.findById(id).map(u->u.getPosts()).get();
     }
-
-
-
 
 }

@@ -3,6 +3,7 @@ package app.service;
 import app.dao.PostRepository;
 import app.model.Post;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -13,7 +14,6 @@ public class PostService {
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
-
 
     public Optional<Post> get_one(Long id) {
         return postRepository.findById(id);
@@ -40,6 +40,8 @@ public class PostService {
     public int number_of_comments(Long id) {
         Optional<Post> byId = postRepository.findById(id);
         return byId.get().getComments().size();
+
     }
+
 
 }

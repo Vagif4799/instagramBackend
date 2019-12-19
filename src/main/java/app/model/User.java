@@ -10,14 +10,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force=true)
 @Entity
 @Table(name = "user_entity")
-public class User {
+    public class User {
 
-    @Column
+    @Column(name = "u_id")
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private final Long id;
@@ -57,5 +58,10 @@ public class User {
     private  int number_followers;
     @Column
     private  int number_follow;
+
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Post> posts;
+
+
 
 }

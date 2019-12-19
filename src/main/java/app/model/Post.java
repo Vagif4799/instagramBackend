@@ -22,7 +22,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "p_id")
     private final Long id;
-    @Column
+    @Column(name = "u_id")
     private final Long user_id;
     @Column
     @NotNull
@@ -35,8 +35,7 @@ public class Post {
     private int like_counter;
     @Column
     private String location;
-//    @Column
-//    private int commnets_counter;
+    private int comments_counter;
     @Column
     @CreatedDate
     private Date createdDate;
@@ -45,5 +44,14 @@ public class Post {
     @ManyToMany(mappedBy = "posts")
     private Set<Comment> comments;
 
-
+    @ManyToOne
+    @JoinTable(name = "r_post_user",
+            joinColumns = {
+                @JoinColumn(name = "post_id", referencedColumnName = "p_id")
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "user_id", referencedColumnName = "u_id")
+            }
+    )
+    private User user;
 }

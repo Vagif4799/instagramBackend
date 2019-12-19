@@ -28,16 +28,19 @@ public class Comment {
 
     @ManyToMany
     @JoinTable(name = "r_comment_post",
-            joinColumns =
-                    {
-                            @JoinColumn(name = "comment_id", referencedColumnName = "c_id")
-                    },
-            inverseJoinColumns = {
-                            @JoinColumn(name = "post_id", referencedColumnName = "p_id")
-            }
+            joinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "c_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "p_id")
     )
-
     private Set<Post> posts;
+
+    @ManyToOne
+    @JoinTable(name = "r_comment_user",
+            joinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "c_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private User commenter;
+
+
 
 }
 
