@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
@@ -36,6 +35,7 @@ public class Post {
 
     @Column
     private String location;
+
     @Column
     @CreatedDate
     private Date createdDate;

@@ -2,14 +2,11 @@ package app.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Optional;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
