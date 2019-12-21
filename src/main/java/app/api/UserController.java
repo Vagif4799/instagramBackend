@@ -3,6 +3,7 @@ package app.api;
 
 import app.model.Post;
 import app.model.User;
+import app.rp.Message;
 import app.service.PostService;
 import app.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,9 @@ public class UserController {
     }
 
     @PostMapping
-    public void handle_post(@RequestBody User user) {
+    public Message handle_post(@RequestBody User user) {
          userService.create_one(user);
+         return new Message("ok");
     }
 
     @GetMapping("/{id}")
