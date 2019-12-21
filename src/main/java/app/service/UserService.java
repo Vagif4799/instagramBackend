@@ -1,6 +1,5 @@
 package app.service;
 
-import app.beans.NullAwareBeanUtilsBean;
 import app.dao.UserRepository;
 import app.model.Post;
 import app.model.User;
@@ -38,12 +37,7 @@ public class UserService {
     public User update_user(User user, Long id){
         Optional<User> old_user = userRepository.findById(id);
                 old_user.ifPresent(u-> {
-                    NullAwareBeanUtilsBean bean = new NullAwareBeanUtilsBean();
-                    try {
-                        bean.copyProperties(u, user);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
+                    BeanUtils.copyProperties(user, u);
                     userRepository.save(u);
                 });
         return user;
