@@ -1,11 +1,10 @@
 package app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 
 import javax.persistence.*;
@@ -14,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force=true)
@@ -26,14 +25,12 @@ import java.util.Set;
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private final Long id;
+
     @Column
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")
     private  String name;
-    @Column
-    @NotNull
-    @Size(min = 1, message = "This field can't be empty.")
-    private   String surname;
+
     @Column(unique = true)
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")
@@ -50,7 +47,6 @@ import java.util.Set;
     @Column
     private  Date birthdate;
     @Column
-    @NotBlank(message = "Phone number is required")
     private   String phone_number;
     @Column
     private  String description;
@@ -58,15 +54,31 @@ import java.util.Set;
     private  String profile_photo;
     @Column
     private String cover_photo;
-    @Column
-    private  int number_followers;
-    @Column
-    private  int number_follow;
 
     @JsonIgnore
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "r_followers",
+            joinColumns = @JoinColumn(name = "follower_id", referencedColumnName = "u_id"),
+            inverseJoinColumns = @JoinColumn(name = "followed_id", referencedColumnName = "u_id")
+    )
+    private List<User> followers;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "followers")
+    private List<User> following;
+
+    @JsonProperty("number_followers") // or whatever name you need in JSON
+    private int number_followers() {
+        return Optional.of(followers).map(List::size).orElse(0);
+    }
+
+    @JsonProperty("number_follow") // or whatever name you need in JSON
+    private int number_following() {
+        return Optional.of(following).map(List::size).orElse(0);
+    }
 
 }

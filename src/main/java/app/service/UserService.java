@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dao.PostRepository;
 import app.dao.UserRepository;
 import app.model.Post;
 import app.model.User;
@@ -9,13 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -49,7 +51,41 @@ public class UserService {
     }
 
     public List<Post> getPostsByUser(Long id) {
-        return userRepository.findById(id).map(u->u.getPosts()).get();
+        return userRepository.findById(id).map(User::getPosts).get();
     }
 
+    public List<User> getFollowsByUser_id(Long id) {
+        return userRepository.findById(id).map(User::getFollowing).get();
+    }
+
+    public List<User> getFollowersByUser_id(Long id) {
+        return  userRepository.findById(id).map(User::getFollowers).get();
+    }
+
+    public void add_follow(Long id, User user) {
+        userRepository.findById(user.getId()).ifPresent(
+                followed->
+                userRepository.findById(id).ifPresent(follower->{
+                    followed.getFollowers().add(follower);
+                    userRepository.save(followed);
+                })
+        );
+
+    }
+
+    public void del_follow(Long id, User user) {
+        userRepository.findById(id).ifPresent(u->{
+            u.getFollowing().remove(user);
+            userRepository.save(u);
+        });
+    }
+
+    public List<Post> getFeed(Long id) {
+         return userRepository.findById(id) // Optional<User>
+                .map(User::getFollowing) // Optional<List<User>>
+                .map(list -> list.stream()
+                            .flatMap(user -> user.getPosts().stream())
+                            .collect(Collectors.toList())
+                ).get();
+    }
 }

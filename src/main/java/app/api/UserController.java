@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User handle_post(@RequestBody User user) {
-        return userService.create_one(user);
+    public void handle_post(@RequestBody User user) {
+         userService.create_one(user);
     }
 
     @GetMapping("/{id}")
@@ -50,10 +50,9 @@ public class UserController {
     }
 
     @PostMapping("/{id}/posts")
-    public Post add_post(@PathVariable("id") Long id, @RequestBody Post post)
+    public void add_post(@PathVariable("id") Long user_id, @RequestBody Post post)
     {
-        userService.get_one(id).ifPresent(post::setUser);
-        return postService.create_one(post);
+        userService.get_one(user_id).ifPresent(u-> postService.create_one(u, post));
     }
 
     @GetMapping("/{id}/posts")
@@ -61,4 +60,36 @@ public class UserController {
     {
         return userService.getPostsByUser(id);
     }
+
+    @DeleteMapping("/{id}/posts")
+    public void deletePost(@PathVariable("id") Long id, @RequestBody Post post)
+    {
+        postService.del_one(post.getId());
+    }
+
+    @GetMapping("/{id}/follows")
+    public List<User> getFollows(@PathVariable("id") Long id){
+        return userService.getFollowsByUser_id(id);
+    }
+
+    @PostMapping("/{id}/follows")
+    public void add_follow(@PathVariable("id") Long id, @RequestBody User user){
+        userService.add_follow(id, user);
+    }
+
+    @DeleteMapping("/{id}/follows")
+    public void delete_follow(@PathVariable("id") Long id, @RequestBody User user){
+        userService.del_follow(id, user);
+    }
+
+    @GetMapping("/{id}/followers")
+    public List<User> getFollowers(@PathVariable("id") Long id){
+        return userService.getFollowersByUser_id(id);
+    }
+
+    @GetMapping("/{id}/feed")
+    public List<Post> getFeed(@PathVariable("id") Long id){
+        return userService.getFeed(id);
+    }
+
 }
