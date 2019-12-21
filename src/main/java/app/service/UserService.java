@@ -85,4 +85,8 @@ public class UserService {
                             .collect(Collectors.toList())
                 ).get();
     }
+
+    public User validate(User user){
+        return userRepository.getByUsernameAndPassword(user.getUsername(), user.getPassword()).get();
+    }
 }
