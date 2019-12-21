@@ -80,4 +80,9 @@ import java.util.Optional;
         return Optional.of(following).map(List::size).orElse(0);
     }
 
+    @JsonProperty("count_posts")
+    private int count_posts(){
+        return Optional.of(posts).map(List::size).orElse(0);
+    }
+
 }
