@@ -70,7 +70,7 @@ import java.util.Optional;
     @ManyToMany(mappedBy = "followers")
     private List<User> following;
 
-    @JsonProperty(value = "number_followers", access = JsonProperty.Access.READ_ONLY) // or whatever name you need in JSON
+    @JsonProperty(value = "number_followers", access = JsonProperty.Access.WRITE_ONLY) // or whatever name you need in JSON
     private int number_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
     }
