@@ -6,8 +6,10 @@ import app.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -82,6 +84,7 @@ public class UserService {
                 .map(User::getFollowing) // Optional<List<User>>
                 .map(list -> list.stream()
                             .flatMap(user -> user.getPosts().stream())
+                            .sorted(Comparator.comparingLong(Post::getId).reversed())
                             .collect(Collectors.toList())
                 ).get();
     }

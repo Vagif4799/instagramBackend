@@ -110,7 +110,11 @@
             <version>5.4.9.Final</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
 
     </dependencies>
 </project>
