@@ -7,8 +7,10 @@ import app.model.Post;
 import app.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -70,7 +72,11 @@ public class PostService {
     }
 
     public List<Comment> get_comments(Long id) {
-        return postRepository.findById(id).map(Post::getComments).get();
+        return postRepository.findById(id).map(Post::getComments)
+                .map(list->list.stream()
+                .sorted(Comparator.comparingLong(Comment::getId).reversed())
+                .collect(Collectors.toList()))
+                .get();
     }
 
     public void add_comment(Comment comment, Long post_id) {

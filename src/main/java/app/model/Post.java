@@ -44,7 +44,6 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
-    @JsonIgnore
     @ManyToOne
     @JoinTable(name = "r_post_user",
             joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "p_id"),
