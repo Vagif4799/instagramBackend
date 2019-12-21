@@ -3,14 +3,12 @@ package app.api;
 
 import app.model.Post;
 import app.model.User;
-import app.rp.Message;
 import app.service.PostService;
 import app.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 @CrossOrigin
 @RestController
 @RequestMapping("/users")
@@ -31,9 +29,8 @@ public class UserController {
     }
 
     @PostMapping
-    public Message handle_post(@RequestBody User user) {
+    public void handle_post(@RequestBody User user) {
          userService.create_one(user);
-         return new Message("ok");
     }
 
     @GetMapping("/{id}")
