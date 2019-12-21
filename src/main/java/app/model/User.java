@@ -49,10 +49,10 @@ import java.util.Optional;
     private   String phone_number;
     @Column
     private  String description;
-    @Column
+    @Column(columnDefinition="varchar(1000)")
     private  String profile_photo;
-    @Column
-    private String cover_photo;
+    @Column(columnDefinition="varchar(1000)")
+    private  String cover_photo;
 
     @JsonIgnore
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)

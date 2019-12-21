@@ -33,8 +33,7 @@ public class Post {
     @NotBlank
     private  String image_url;
 
-    @Column(columnDefinition="varchar(1000)")
-    private  String cover_photo;
+
 
     @Column
     private String location;
