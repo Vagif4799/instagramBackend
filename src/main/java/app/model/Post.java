@@ -29,9 +29,12 @@ public class Post {
     @NotNull
     @Size(min=1, message = "Please, add Caption.")
     private  String description;
-    @Column
+    @Column(length=1000)
     @NotBlank
     private  String image_url;
+
+    @Column(length=1000)
+    private  String cover_photo;
 
     @Column
     private String location;
