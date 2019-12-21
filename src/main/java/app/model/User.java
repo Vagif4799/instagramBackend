@@ -75,7 +75,7 @@ import java.util.Optional;
         return Optional.of(followers).map(List::size).orElse(0);
     }
 
-    @JsonProperty("number_follow") // or whatever name you need in JSON
+    @JsonProperty(value = "number_follow", access = JsonProperty.Access.WRITE_ONLY) // or whatever name you need in JSON
     private int number_following() {
         return Optional.of(following).map(List::size).orElse(0);
     }
