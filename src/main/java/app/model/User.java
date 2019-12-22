@@ -78,7 +78,7 @@ import java.util.Optional;
     int number_follow;
     int count_posts;
 
-    public int getNumber_followers() {
+    /*public int getNumber_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
     }
 
@@ -88,6 +88,6 @@ import java.util.Optional;
 
     public int getCount_posts() {
         return Optional.of(posts).map(List::size).orElse(0);
-    }
+    }*/
 
 }
