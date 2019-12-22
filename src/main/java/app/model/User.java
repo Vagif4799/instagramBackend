@@ -70,6 +70,10 @@ import java.util.Optional;
     @ManyToMany(mappedBy = "followers", cascade = CascadeType.ALL)
     private List<User> following;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL, orphanRemoval = true )
+    private List<Comment> comments;
+
     @JsonProperty(value = "number_followers")
     private int number_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
