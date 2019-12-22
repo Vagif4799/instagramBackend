@@ -75,17 +75,17 @@ import java.util.Optional;
     private List<Comment> comments;
 
 
-    @JsonProperty(value = "number_followers")
+    @JsonProperty(value = "number_followers", access = JsonProperty.Access.WRITE_ONLY)
     private int number_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
     }
 
-    @JsonProperty(value = "number_follow")
+    @JsonProperty(value = "number_follow", access = JsonProperty.Access.WRITE_ONLY)
     private int number_following() {
         return Optional.of(following).map(List::size).orElse(0);
     }
 
-    @JsonProperty(value = "count_posts")
+    @JsonProperty(value = "count_posts", access = JsonProperty.Access.WRITE_ONLY)
     private int count_posts(){
         return Optional.of(posts).map(List::size).orElse(0);
     }
