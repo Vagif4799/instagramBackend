@@ -46,7 +46,7 @@ public class UserService {
                     }
                     userRepository.save(u);
                 });
-        return user;
+        return get_one(id).get();
     }
 
     public void del_one(Long id) {
