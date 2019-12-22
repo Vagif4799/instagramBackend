@@ -1,5 +1,6 @@
 package app.service;
 
+import app.beans.NullAwareBeanUtilsBean;
 import app.dao.UserRepository;
 import app.model.Post;
 import app.model.User;
@@ -37,18 +38,15 @@ public class UserService {
     public User update_user(User user, Long id){
         Optional<User> old_user = userRepository.findById(id);
                 old_user.ifPresent(u-> {
-                    if(user.getUsername()!= null) u.setUsername(user.getUsername());
-                    if(user.getName()!= null) u.setName(user.getName());
-                    if(user.getMail()!= null) u.setMail(user.getMail());
-                    if(user.getPassword()!= null) u.setPassword(user.getPassword());
-                    if(user.getGender()!= null) u.setGender(user.getGender());
-                    if(user.getPhone_number()!= null) u.setPhone_number(user.getGender());
-                    if(user.getProfile_photo()!= null) u.setProfile_photo(user.getGender());
-                    if(user.getDescription() != null) u.setDescription(user.getDescription());
-                    if(user.getCover_photo() != null) u.setCover_photo(user.getCover_photo());
+                    NullAwareBeanUtilsBean bean = new NullAwareBeanUtilsBean();
+                    try {
+                        bean.copyProperties(u,user);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                     userRepository.save(u);
                 });
-        return user;
+        return get_one(id).get();
     }
 
     public void del_one(Long id) {

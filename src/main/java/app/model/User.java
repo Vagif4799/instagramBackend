@@ -74,20 +74,32 @@ import java.util.Optional;
     @OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL, orphanRemoval = true )
     private List<Comment> comments;
 
-    int number_followers;
-    int number_follow;
-    int count_posts;
 
-    /*public int getNumber_followers() {
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public int getNumber_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
     }
 
-    public int getNumber_follow() {
+
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private int getNumber_following() {
         return Optional.of(following).map(List::size).orElse(0);
     }
 
-    public int getCount_posts() {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private int getCount_posts(){
         return Optional.of(posts).map(List::size).orElse(0);
-    }*/
+    }
+
+    public void setNumber_followers(int number_followers) {
+    }
+
+    public void setNumber_follow(int number_follow) {
+    }
+
+    public void setCount_posts(int count_posts) {
+    }
 
 }
