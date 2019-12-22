@@ -93,15 +93,12 @@ import java.util.Optional;
         return Optional.of(posts).map(List::size).orElse(0);
     }
 
-    @JsonIgnore
     public void setNumber_followers(int number_followers) {
     }
 
-    @JsonIgnore
     public void setNumber_follow(int number_follow) {
     }
 
-    @JsonIgnore
     public void setCount_posts(int count_posts) {
     }
 
