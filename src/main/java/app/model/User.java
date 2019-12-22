@@ -70,17 +70,17 @@ import java.util.Optional;
     @ManyToMany(mappedBy = "followers")
     private List<User> following;
 
-    @JsonProperty(value = "number_followers", access = JsonProperty.Access.READ_ONLY) // or whatever name you need in JSON
+    @JsonProperty(value = "number_followers") // or whatever name you need in JSON
     private int number_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
     }
 
-    @JsonProperty(value = "number_follow", access = JsonProperty.Access.READ_ONLY) // or whatever name you need in JSON
+    @JsonProperty(value = "number_follow") // or whatever name you need in JSON
     private int number_following() {
         return Optional.of(following).map(List::size).orElse(0);
     }
 
-    @JsonProperty(value = "count_posts", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "count_posts")
     private int count_posts(){
         return Optional.of(posts).map(List::size).orElse(0);
     }
