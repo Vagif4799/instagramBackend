@@ -55,7 +55,7 @@ import java.util.Optional;
     private  String cover_photo;
 
     @JsonIgnore
-    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
     @JsonIgnore
@@ -67,15 +67,15 @@ import java.util.Optional;
     private List<User> followers;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "followers")
+    @ManyToMany(mappedBy = "followers", cascade = CascadeType.ALL)
     private List<User> following;
 
-    @JsonProperty(value = "number_followers") // or whatever name you need in JSON
+    @JsonProperty(value = "number_followers")
     private int number_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
     }
 
-    @JsonProperty(value = "number_follow") // or whatever name you need in JSON
+    @JsonProperty(value = "number_follow")
     private int number_following() {
         return Optional.of(following).map(List::size).orElse(0);
     }

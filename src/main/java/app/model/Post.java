@@ -43,7 +43,7 @@ public class Post {
     private Date createdDate;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     @ManyToOne
