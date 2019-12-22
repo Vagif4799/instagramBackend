@@ -75,23 +75,34 @@ import java.util.Optional;
     private List<Comment> comments;
 
 
-    private int number_followers;
-    private int number_follow;
-    private int count_posts;
 
-    @JsonProperty(value = "number_followers")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public int getNumber_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
     }
 
-    @JsonProperty(value = "number_follow")
+
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int getNumber_following() {
         return Optional.of(following).map(List::size).orElse(0);
     }
 
-    @JsonProperty(value = "count_posts")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int getCount_posts(){
         return Optional.of(posts).map(List::size).orElse(0);
+    }
+
+    @JsonIgnore
+    public void setNumber_followers(int number_followers) {
+    }
+
+    @JsonIgnore
+    public void setNumber_follow(int number_follow) {
+    }
+
+    @JsonIgnore
+    public void setCount_posts(int count_posts) {
     }
 
 }
