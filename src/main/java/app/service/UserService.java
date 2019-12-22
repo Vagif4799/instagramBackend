@@ -102,7 +102,14 @@ public class UserService {
         return userRepository.getByUsernameAndPassword(user.getUsername(), user.getPassword()).get();
     }
 
-    public User searchByUserName(String username) {
-        return userRepository.getByUsername(username).get();
+    public List<User> search(String search_content) {
+        return userRepository.findByUsernameContainingIgnoreCase(search_content)
+                .map(list->list.stream()
+                        .sorted(Comparator.comparingLong(u->{
+                            String username = u.getUsername().toLowerCase();
+                            return username.indexOf(search_content.toLowerCase());
+                        }))
+                        .collect(Collectors.toList()))
+                .get();
     }
 }

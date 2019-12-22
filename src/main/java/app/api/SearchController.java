@@ -1,8 +1,11 @@
 package app.api;
 
+import app.model.Phrase;
 import app.model.User;
 import app.service.UserService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -15,8 +18,8 @@ public class SearchController {
     }
 
     @PostMapping
-    public User search(@RequestBody User user)
+    public List<User> search(@RequestBody Phrase phrase)
     {
-        return userService.searchByUserName(user.getUsername());
+        return userService.search(phrase.getContent());
     }
 }
