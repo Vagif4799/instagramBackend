@@ -84,7 +84,7 @@ import java.util.Optional;
 
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private int getNumber_following() {
+    private int getNumber_follow() {
         return Optional.of(following).map(List::size).orElse(0);
     }
 
