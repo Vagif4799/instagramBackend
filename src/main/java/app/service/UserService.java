@@ -43,6 +43,7 @@ public class UserService {
                     NullAwareBeanUtilsBean bean = new NullAwareBeanUtilsBean();
                     try {
                         bean.copyProperties(u,user);
+                        if(user.getUsername() != null) u.setUsername(user.getUsername());
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                     }
