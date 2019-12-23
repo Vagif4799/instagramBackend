@@ -35,6 +35,23 @@ import java.util.stream.Collectors;
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")
     private   String username;
+
+    @Column
+    private String roles;
+
+    @Transient
+    private final String ROLES_DELIMITER = ":";
+
+    @JsonIgnore
+    public String[] getRoles() {
+        if (this.roles == null || this.roles.isEmpty()) return new String[]{};
+        return this.roles.split(ROLES_DELIMITER);
+    }
+
+    public void setRoles(String[] roles) {
+        this.roles = String.join(ROLES_DELIMITER, roles);
+    }
+
     @Column
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")

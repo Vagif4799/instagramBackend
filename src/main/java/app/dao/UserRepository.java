@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-    Optional<User> getByUsernameAndPassword(@NotNull @Size(min = 1, message = "This field can't be empty.") String username, @NotBlank(message = "Password is required") String password);
-    Optional<User> getByUsername(@NotNull @Size(min = 1, message = "This field can't be empty.") String username);
+    Optional<User> findByUsernameAndPassword(@NotNull @Size(min = 1, message = "This field can't be empty.") String username, @NotBlank(message = "Password is required") String password);
+    Optional<User> findByUsername(@NotNull @Size(min = 1, message = "This field can't be empty.") String username);
     Optional<List<User>> findByUsernameContainingIgnoreCase(String text);//
 }

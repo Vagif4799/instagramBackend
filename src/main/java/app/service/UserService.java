@@ -101,7 +101,7 @@ public class UserService {
     }
 
     public User validate(User user){
-        return userRepository.getByUsernameAndPassword(user.getUsername(), user.getPassword()).get();
+        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()).get();
     }
 
     public List<User> search(String search_content) {

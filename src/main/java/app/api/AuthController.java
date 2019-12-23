@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/login")
+@RequestMapping
 public class AuthController {
     private final UserService userService;
 
@@ -14,8 +14,8 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public User validate(@RequestBody User user){
-        return userService.validate(user);
+    @PostMapping("/login")
+    public void handle_login (@RequestBody User user){
+        userService.validate(user);
     }
 }
