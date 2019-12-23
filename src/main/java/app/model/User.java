@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
     private   String mail;
 
     @Column
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password is required")
     private   String password;
 
