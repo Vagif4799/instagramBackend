@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
@@ -21,6 +22,13 @@ public class Comment {
     @Column
     private String comment_itself;
 
+    @Column
+    private Date createdAt;
+
+    @PrePersist
+    void createdAt() {
+        this.createdAt = new Date();
+    }
 
     @JsonIgnore
     @ManyToOne

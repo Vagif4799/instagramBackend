@@ -74,7 +74,7 @@ public class PostService {
     public List<Comment> get_comments(Long id) {
         return postRepository.findById(id).map(Post::getComments)
                 .map(list->list.stream()
-                .sorted(Comparator.comparingLong(Comment::getId).reversed())
+                .sorted(Comparator.comparing(Comment::getCreatedAt).reversed())
                 .collect(Collectors.toList()))
                 .get();
     }

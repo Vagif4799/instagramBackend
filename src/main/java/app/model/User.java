@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force=true)
@@ -38,9 +39,12 @@ import java.util.Optional;
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")
     private   String mail;
+
     @Column
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password is required")
     private   String password;
+
     @Column
     private   String gender;
     @Column
@@ -67,7 +71,7 @@ import java.util.Optional;
     private List<User> followers;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "followers", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "followers")
     private List<User> following;
 
     @JsonIgnore
@@ -75,13 +79,10 @@ import java.util.Optional;
     private List<Comment> comments;
 
 
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public int getNumber_followers() {
         return Optional.of(followers).map(List::size).orElse(0);
     }
-
-
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int getNumber_follow() {
@@ -100,6 +101,43 @@ import java.util.Optional;
     }
 
     public void setCount_posts(int count_posts) {
+    }
+
+
+    public Boolean areFriends(User user){
+        return getFollowing().contains(user) && user.getFollowing().contains(this);
+    }
+
+    @JsonIgnore
+    public List<User> getFriends(){
+        return getFollowing()
+                .stream()
+                .filter(this::areFriends)
+                .collect(Collectors.toList());
+    }
+
+    public List<User> getCommonFriends(User user){
+        return getFriends().stream()
+                .filter(user.getFriends()::contains)
+                .collect(Collectors.toList());
+    }
+
+    public List<User> getCommonFollowing(User user){
+        return getFollowing().stream()
+                .filter(user.getFollowing()::contains)
+                .collect(Collectors.toList());
+    }
+
+    public List<User> getFriendsThatFollows(User user){
+        return getFriends().stream()
+                .filter(f -> f.getFollowing().contains(user))
+                .collect(Collectors.toList());
+    }
+
+    public List<User> getFollowingThatFollows(User user){
+        return getFollowing().stream()
+                .filter(f -> f.getFollowing().contains(user))
+                .collect(Collectors.toList());
     }
 
 }

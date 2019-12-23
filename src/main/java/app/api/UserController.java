@@ -93,4 +93,9 @@ public class UserController {
         return userService.getFeed(id);
     }
 
+    @GetMapping("/{id}/recommend")
+    public List<User> getRecommendations(@PathVariable("id") Long id){
+        return userService.getRecommended(id);
+    }
+
 }

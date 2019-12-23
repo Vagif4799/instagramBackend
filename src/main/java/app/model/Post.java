@@ -33,14 +33,16 @@ public class Post {
     @NotBlank
     private  String image_url;
 
-
-
     @Column
     private String location;
 
     @Column
-    @CreatedDate
-    private Date createdDate;
+    private Date createdAt;
+
+    @PrePersist
+    void createdAt() {
+        this.createdAt = new Date();
+    }
 
     @JsonIgnore
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

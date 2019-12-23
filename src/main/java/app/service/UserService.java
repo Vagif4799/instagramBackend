@@ -4,12 +4,14 @@ import app.beans.NullAwareBeanUtilsBean;
 import app.dao.UserRepository;
 import app.model.Post;
 import app.model.User;
-import org.springframework.beans.BeanUtils;
+import app.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 
 @Service
@@ -57,7 +59,7 @@ public class UserService {
          return userRepository.findById(id)
                  .map(User::getPosts)
                  .map(list -> list.stream()
-                 .sorted(Comparator.comparingLong(Post::getId).reversed())
+                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                  .collect(Collectors.toList()))
                  .get();
     }
@@ -93,7 +95,7 @@ public class UserService {
                 .map(User::getFollowing) // Optional<List<User>>
                 .map(list -> list.stream()
                             .flatMap(user -> user.getPosts().stream())
-                            .sorted(Comparator.comparingLong(Post::getId).reversed())
+                            .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                             .collect(Collectors.toList())
                 ).get();
     }
@@ -112,4 +114,27 @@ public class UserService {
                         .collect(Collectors.toList()))
                 .get();
     }
+
+    public List<User> getRecommended(Long id){
+
+        Stream<User> allUsers = StreamSupport.stream(userRepository.findAll().spliterator(), false);
+        User user = userRepository.findById(id).get();
+
+        return allUsers
+                .filter(user1 -> !user.equals(user1))
+                .filter(user1->!user.getFollowing().contains(user1))
+                .map(user1 -> new Pair<User, Long>(user1, 0L))
+                .peek(pair-> pair.second += user.getCommonFriends(pair.first).size()*2)
+                .peek(pair-> pair.second += user.getFriendsThatFollows(pair.first).size())
+                .peek(pair-> pair.second += user.getCommonFollowing(pair.first).size())
+                .peek(pair-> pair.second += user.getFollowingThatFollows(pair.first).size())
+                .peek(pair-> pair.second += user.getFollowers().contains(pair.first)?3:0)
+                .sorted(Comparator.comparingLong(Pair<User, Long>::getSecond).reversed())
+                .map(Pair::getFirst)
+                .limit(10)
+                .collect(Collectors.toList());
+
+    }
+
+
 }
