@@ -26,7 +26,7 @@ public class JwtTokenService {
     @Value("${jwt.expiration.remember}")
     private Long expiration_remember;
 
-
+//
     public String generateToken(Long user_id, boolean remember_me) {
         final Date now = new Date();
         final Date expiry = new Date(now.getTime() + (remember_me ? expiration_remember : expiration_normal));
