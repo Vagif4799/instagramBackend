@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 
     @Column
     @NotBlank(message = "Password is required")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private   String password;
 
     @Column
