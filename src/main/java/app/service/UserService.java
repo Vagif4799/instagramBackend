@@ -4,7 +4,9 @@ import app.beans.NullAwareBeanUtilsBean;
 import app.dao.UserRepository;
 import app.model.Post;
 import app.model.User;
+import app.util.CurrentUser;
 import app.util.Pair;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,48 +20,49 @@ import java.util.stream.StreamSupport;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder enc;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder enc) {
         this.userRepository = userRepository;
+        this.enc = enc;
     }
 
-
     public Optional<User> get_one(Long id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id)
+        .map(u-> {u.setFollowed(CurrentUser.get().getFollowing().contains(u)); return u;});
     }
 
     public Iterable<User> get_all() {
-        return userRepository.findAll();
+        Stream<User> allUsers = StreamSupport.stream(userRepository.findAll().spliterator(), false);
+        return allUsers.peek(u-> u.setFollowed(CurrentUser.get().getFollowing().contains(u)))
+                .collect(Collectors.toList());
+
     }
 
-    public User create_one(User user) {
-        userRepository.save(user);
-        return user;
-    }
-
-    public User update_user(User user, Long id){
-        Optional<User> old_user = userRepository.findById(id);
+    public User update_user(User user){
+        Optional<User> old_user = userRepository.findById(CurrentUser.get().getId());
                 old_user.ifPresent(u-> {
                     NullAwareBeanUtilsBean bean = new NullAwareBeanUtilsBean();
                     try {
                         bean.copyProperties(u,user);
-                        if(user.getUsername() != null) u.setUsername(user.getUsername());
+                        if(user.getPassword() != null) u.setPassword(enc.encode(user.getPassword()));
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                     }
                     userRepository.save(u);
                 });
-        return get_one(id).get();
+        return get_one(CurrentUser.get().getId()).get();
     }
 
-    public void del_one(Long id) {
-        userRepository.deleteById(id);
+    public void del_one() {
+        userRepository.deleteById(CurrentUser.get().getId());
     }
 
     public List<Post> getPostsByUser(Long id) {
          return userRepository.findById(id)
                  .map(User::getPosts)
                  .map(list -> list.stream()
+                 .peek(p->p.setLiked(p.getLikes().contains(CurrentUser.get())))
                  .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                  .collect(Collectors.toList()))
                  .get();
@@ -73,41 +76,40 @@ public class UserService {
         return  userRepository.findById(id).map(User::getFollowers).get();
     }
 
-    public void add_follow(Long id, User user) {
+    public void add_follow(User user) {
         userRepository.findById(user.getId()).ifPresent(
-                followed->
-                userRepository.findById(id).ifPresent(follower->{
-                    followed.getFollowers().add(follower);
+                followed-> {
+                    followed.getFollowers().add(CurrentUser.get());
                     userRepository.save(followed);
-                })
+                }
         );
 
     }
 
-    public void del_follow(Long id, User user) {
-        userRepository.findById(id).ifPresent(u->{
-            u.getFollowing().remove(user);
-            userRepository.save(u);
-        });
+    public void del_follow(User user) {
+        userRepository.findById(user.getId()).ifPresent(
+                followed-> {
+                    followed.getFollowers().remove(CurrentUser.get());
+                    userRepository.save(followed);
+                }
+        );
     }
 
-    public List<Post> getFeed(Long id) {
-         return userRepository.findById(id) // Optional<User>
+    public List<Post> getFeed() {
+         return userRepository.findById(CurrentUser.get().getId()) // Optional<User>
                 .map(User::getFollowing) // Optional<List<User>>
                 .map(list -> list.stream()
                             .flatMap(user -> user.getPosts().stream())
+                            .peek(p->p.setLiked(p.getLikes().contains(CurrentUser.get())))
                             .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                             .collect(Collectors.toList())
                 ).get();
     }
 
-    public User validate(User user){
-        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()).get();
-    }
-
     public List<User> search(String search_content) {
         return userRepository.findByUsernameContainingIgnoreCase(search_content)
                 .map(list->list.stream()
+                        .peek(u-> u.setFollowed(CurrentUser.get().getFollowing().contains(u)))
                         .sorted(Comparator.comparingLong(u->{
                             String username = u.getUsername().toLowerCase();
                             return username.indexOf(search_content.toLowerCase());
@@ -116,12 +118,13 @@ public class UserService {
                 .get();
     }
 
-    public List<User> getRecommended(Long id){
+    public List<User> getRecommended(){
 
         Stream<User> allUsers = StreamSupport.stream(userRepository.findAll().spliterator(), false);
-        User user = userRepository.findById(id).get();
+        User user = CurrentUser.get();
 
         return allUsers
+                .peek(u-> u.setFollowed(user.getFollowing().contains(u)))
                 .filter(user1 -> !user.equals(user1))
                 .filter(user1->!user.getFollowing().contains(user1))
                 .map(user1 -> new Pair<User, Long>(user1, 0L))

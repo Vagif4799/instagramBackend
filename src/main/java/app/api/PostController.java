@@ -39,13 +39,13 @@ public class PostController {
     }
 
     @PostMapping("/{post_id}/likes")
-    public void add_like(@PathVariable("post_id") Long post_id, @RequestBody User user){
-        postService.add_like(user, post_id);
+    public void add_like(@PathVariable("post_id") Long post_id){
+        postService.add_like(post_id);
     }
 
     @DeleteMapping("/{id}/likes")
-    public void delete_like(@PathVariable("id") Long id, @RequestBody User user){
-        postService.delete_like(id, user);
+    public void delete_like(@PathVariable("id") Long id){
+        postService.delete_like(id);
     }
 
     @GetMapping("/{id}/comments")

@@ -5,12 +5,15 @@ import app.dao.PostRepository;
 import app.model.Comment;
 import app.model.Post;
 import app.model.User;
+import app.util.CurrentUser;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class PostService {
@@ -24,17 +27,19 @@ public class PostService {
     }
 
     public Optional<Post> get_one(Long id) {
-        return postRepository.findById(id);
+        return postRepository.findById(id)
+                .map(p->{p.setLiked(p.getLikes().contains(CurrentUser.get())); return p;});
     }
 
     public Iterable<Post> get_all() {
-        return postRepository.findAll();
+        Stream<Post> allPosts = StreamSupport.stream(postRepository.findAll().spliterator(), false);
+        return allPosts.peek(p-> p.setLiked(p.getLikes().contains(CurrentUser.get())))
+                .collect(Collectors.toList());
     }
 
-    public Post create_one(User user, Post post) {
-        post.setUser(user);
+    public void create_one(Post post) {
+        post.setUser(CurrentUser.get());
         postRepository.save(post);
-        return post;
     }
 
     public void del_one(Long id) {
@@ -57,16 +62,16 @@ public class PostService {
         return postRepository.findById(id).map(Post::getLikes).get();
     }
 
-    public void add_like(User user, Long post_id) {
+    public void add_like( Long post_id) {
         postRepository.findById(post_id).ifPresent(post -> {
-            post.getLikes().add(user);
+            post.getLikes().add(CurrentUser.get());
             postRepository.save(post);
         });
     }
 
-    public void delete_like(Long id, User user) {
+    public void delete_like(Long id) {
         postRepository.findById(id).ifPresent(post->{
-            post.getLikes().remove(user);
+            post.getLikes().remove(CurrentUser.get());
             postRepository.save(post);
         });
     }
@@ -80,6 +85,7 @@ public class PostService {
     }
 
     public void add_comment(Comment comment, Long post_id) {
+        comment.setCommenter(CurrentUser.get());
         postRepository.findById(post_id).ifPresent(comment::setPost);
         commentRepository.save(comment);
     }

@@ -63,15 +63,18 @@ public class Post {
     )
     private List<User> likes;
 
+    @Transient
+    private boolean liked;
+
     @JsonProperty("like_counter")
     private int number_likes() {
-        return Optional.of(likes).map(List::size).orElse(0);
+        return Optional.ofNullable(likes).map(List::size).orElse(0);
     }
 
 
     @JsonProperty("comments_counter")
     private int comments_counter() {
-        return Optional.of(comments).map(List::size).orElse(0);
+        return Optional.ofNullable(comments).map(List::size).orElse(0);
     }
 
 }

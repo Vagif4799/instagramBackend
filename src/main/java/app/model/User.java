@@ -34,12 +34,13 @@ import java.util.stream.Collectors;
     @Column(unique = true)
     @NotNull
     @Size(min = 1, message = "This field can't be empty.")
-    private   String username;
+    private  String username;
 
     @Column
     private String roles;
 
     @Transient
+    @JsonIgnore
     private final String ROLES_DELIMITER = ":";
 
     @JsonIgnore
@@ -95,20 +96,22 @@ import java.util.stream.Collectors;
     @OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL, orphanRemoval = true )
     private List<Comment> comments;
 
+    @Transient
+    private boolean followed;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public int getNumber_followers() {
-        return Optional.of(followers).map(List::size).orElse(0);
+        return Optional.ofNullable(followers).map(List::size).orElse(0);
     }
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int getNumber_follow() {
-        return Optional.of(following).map(List::size).orElse(0);
+        return Optional.ofNullable(following).map(List::size).orElse(0);
     }
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int getCount_posts(){
-        return Optional.of(posts).map(List::size).orElse(0);
+        return Optional.ofNullable(posts).map(List::size).orElse(0);
     }
 
     public void setNumber_followers(int number_followers) {
@@ -119,6 +122,7 @@ import java.util.stream.Collectors;
 
     public void setCount_posts(int count_posts) {
     }
+
 
 
     public Boolean areFriends(User user){
